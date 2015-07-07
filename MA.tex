@@ -1,0 +1,307 @@
+\NeedsTeXFormat{LaTeX2e}
+\documentclass[a4paper,12pt,twoside,openright,DIV=9
+%,draft
+]{scrbook}
+\KOMAoptions{DIV=last}
+
+
+\pagestyle{headings}
+\usepackage[utf8]{inputenc}
+\usepackage[german]{babel}
+\usepackage{csquotes}
+
+
+\usepackage[T1]{fontenc}
+\renewcommand{\sfdefault}{phv}
+\renewcommand{\rmdefault}{phv}
+\renewcommand{\ttdefault}{pcr}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{tabularx}
+\usepackage{hyphenat}
+\usepackage{subfigure}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{ltxtable}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage[format=default,font=footnotesize,labelfont=bf]{caption}
+\usepackage[colorlinks,
+pdfpagelabels,
+pdfstartview = FitH,
+bookmarksopen = true,
+bookmarksnumbered = true,
+linkcolor = black,
+plainpages = false,
+hypertexnames = false,
+citecolor = black] {hyperref}
+
+
+% Hurenkinder und Schusterjungen verhindern
+\clubpenalty10000
+\widowpenalty10000
+\displaywidowpenalty=10000
+
+\newcommand{\fullname}{Katharina Krammer}
+\newcommand{\email}{katharina.krammer@uni-ulm.de}
+\newcommand{\titel}{Adaptive und lernende Regler \\ für Montageanwendungen \\ mit Industrierobotern}
+
+\newcommand{\jahr}{2015}
+\newcommand{\matnr}{698788}
+\newcommand{\gutachterA}{Prof. Dr. Heiko Neumann}
+\newcommand{\gutachterB}{Prof. Dr. Günther Palm}
+\newcommand{\betreuer}{Dipl.-Ing. Lorenz Halt}
+
+\newcommand{\fakultaet}{Ingenieurwissenschaften und Informatik}
+
+\newcommand{\institut}{Institut für Neuroinformatik}
+
+
+
+\begin{document}
+\lstset{
+frame=lines,
+frame=Tb,
+basicstyle=\small,
+language=C,
+morekeywords={each,in},
+keywordstyle=\bfseries,
+identifierstyle=,
+stringstyle=\ttfamily,
+showstringspaces=false,
+tabsize=5,
+columns=flexible
+framesep	= 5pt,
+rulecolor	= \color{Gray},
+commentstyle= \color{OliveGreen},
+keywordstyle= \ttfamily\bfseries\color{RedViolet},
+stringstyle = \ttfamily\color{Blue},
+emphstyle	= \tt\color{red},
+breaklines=true,
+basicstyle	= \footnotesize\ttfamily,
+%	basicstyle	= \ttfamily,
+numbers		= left,
+numberstyle	= \tiny\color{Black},
+xleftmargin	= 5pt,
+xrightmargin= 5pt,
+aboveskip	= \bigskipamount,
+belowskip	= \bigskipamount,
+captionpos	= b,
+}
+
+
+\lstdefinelanguage{pseudocode} {	
+	morekeywords={end,break,const,continue,do,while,from,export,for,in,function,if,else,import,in,instanceOf,new,return,switch,def,self,pass,this,throw,try,typeof,var,void,with,yield,raise,except,var,with},
+sensitive=false,
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+morestring=[b]",
+morestring=[d]'
+}
+
+
+	
+
+
+% Titelseite
+\thispagestyle{empty}
+\begin{addmargin*}[4mm]{-0mm}
+
+\includegraphics[height=1.8cm]{Images/unilogo_bild}
+\hfill
+\includegraphics[height=1.8cm]{Images/unilogo_wort}\\[1em]
+
+{\footnotesize
+%{\bfseries Universität Ulm} \textbar ~89069 Ulm \textbar ~Germany
+%\hspace*{98.5mm}
+
+\hfill{}\bfseries Fakultät für \fakultaet
+
+\hfill{}\mdseries \institut\\[2cm]
+%\nohyphens{\parbox{140mm}{\bfseries \huge \titel}\\[0.5em]}
+\parbox{200mm}{\bfseries \huge \titel}\\[0.5em]
+{\footnotesize Masterarbeit an der Universität Ulm}\\[3em]
+{\footnotesize \bfseries Vorgelegt von:}\\
+{\footnotesize \fullname\\\email}\\[2em]
+{\footnotesize \bfseries Gutachter:}\\                     
+{\footnotesize\gutachterA\\
+\gutachterB
+}\\[2em]
+{\footnotesize \bfseries Betreuer:}\\ 
+{\footnotesize\betreuer}\\\\
+{\footnotesize\jahr}
+}
+\end{addmargin*}
+
+
+
+          
+
+\setstretch{1.4}
+
+\tableofcontents
+
+
+\chapter*{Zeug, bei dem ich noch nicht weiß, wo es hingehört}
+Im Rahmen dieser Masterarbeit wurde mit Industrierobotern, genauer mit Manipulatoren gearbeitet. Dies sind stationäre Roboterarme, die aus mehreren Gliedern bestehen. Diese Glieder sind durch Dreh- oder Schubgelenke verbunden. Das erste ist durch ein Gelenk mit der Basis verbunden. Am letzten befindet sich der Endeffektor, zum Beispiel ein Greifer oder ein Werkzeug.
+
+\chapter{Einführung}
+\chapter{iTaSC}
+Die Abkürzung \textit{iTaSC} steht für \textbf{i}nstantaneous \textbf{Ta}sk \textbf{S}pecification using \textbf{C}onstraints. \textit{iTaSC} wurde an der 
+K.U. Leuven entwickelt \cite{orocos} und ist ein Framework, das dazu dient, verschiedene Darsellungssysteme in einander über zu führen. Bei einem mechanischen System wie zum Beispiel einem Roboter besteht oft das Problem, dass mit verschiedenen Formalismen und Darstellungsformen gearbeitet wird. Beispielsweise wird ein Ziel, zu dem der Endeffektor soll, meist in karthesischen Koordinaten beschrieben. Die Stellung des Roboters wiederum wird  in Achswinkeln angegeben. Diese Darstellungsformen in einander zu überführen, ist unter Anderem Aufgabe von \textit{iTaSC}.
+\section{Kinematik}
+%todo Iwann vor hier erklären, wie ein Roboter aussieht und zusammengesetz ist.
+Die Kinematik beschreibt, wie sich Punkte und Körper im Raum bewegen. In der Industrierobotik ist dies zum Beispiel relevant, um die Position eines Gegenstandes oder des Endeffektors und deren Änderung zu beschreiben.  Sie kann unterschieden werden in Vorwärts- und Rückwärtskinematik.
+
+\subsection{Vorwärtskinematik}
+Bei der Vorwärtskinematik ist die Einwirkung auf den Roboter gegeben und seine Porition ist das Ergebnis. Bei einem Manipulator ist also zum Beispiel die Einstellung der Achswinkel gegeben. Berechnet wird dann die Position des Endeffektors. 
+
+Problemstellungen, beispielsweise die Aufgabe, dass der Roboter mit dem Endeffektor einen bestimmten Punkt oder Marker erreichen soll, sind meist durch Korrdinatendarstellung gegeben. Der Roboter selbst rechnet jedoch mit Achswinkeln. Also den Winkeln, in denen seine Gelenke eingestellt sind. Deswegen ist es notwendig, diese beiden Darstellungsformen in einander umzurechnen. Diese Aufgabe übernimmt in der Praxis iTaSC. 
+
+Zur Berechnung der Position und Ausrichtung des Endeffektors nimmt man an der Basis, dem Endeffektor selbst und jedem Gelenk des Roboters ein Koordinatensystem an. Diese lassen sich jeweils in Abhängigkeit von einander ausdrücken.
+
+Ein Koordinatensystem kann, genauso wie ein Starrkörper, im Raum durch seine Position und seine Ausrichtung beschrieben werden. Dafür werden die Koordinaten des Ursprungs sowie die Richtung von zwei der drei Raumachsen angegeben. Diese Beschreibung muss von einem Bezugsrahmen abhängen. %Sei dieser Bezugsrahmen bezeichnet mit $O-xyz$. $x$, $y$ und $z$ seien die Einheitsvektoren in diesem System. Dann lässt sich die Position eines zweiten Systems $O'$ darstellen durch
+%$o'=o'_xx+o'_yy+o'_zz$.
+%Statt eines Starrkörpers kann auch ein Koordinatensystem in Abhängigkeit eines Bezugskoordinatensystems dargestellt werden. 
+Das bedeutet ebenso, dass ein Punkt von jedem System in ein anderes transformiert werden kann. Für orthogonale karthesische Koordinatensysteme ist dies möglich durch eine sogenannte homogene Transformationsmatrix. \cite{Siciliano}
+
+\begin{equation}
+p_1=A_0^1p_0
+\label{p0nachp1}
+\end{equation}
+Hierbei ist $p_0$ ein Punkt, beschrieben in Abhängigkeit eines Koordinatensystems $S_0$. $p_1$ ist derselbe Punkt, beschrieben in Abhängigkeit eines anderen Koordinatensystems $S_1$. $A_0^1$ ist die homogene Transformationsmatrix, mit der sich jeder Punkt oder Starrkörper von $S_0$ in $S_1$ transformieren lässt. Hierbei wird sowohl die Verschiebung als auch die Rotation berücksichtigt. \\ 
+Will man nun den Punkt von $S_1$ in ein weiteres Koordinatensystem $S_2$ verschieben, benötigt man die entsprechende homogene Transformationsmatrix $A_1^2$.
+
+\begin{equation}
+p_2=A_1^2p_1
+\label{p1nachp2}
+\end{equation}
+Durch Einsetzen der Formel \ref{p0nachp1} in \ref{p1nachp2}, lässt sich erkennen, dass sich $p_2$ auch direkt in Abhängigkeit von $p_0$ darstellen lässt durch
+\begin{equation}
+p_2=A_1^2A_0^1p_0
+\label{p0nachp2}
+\end{equation}
+So kann also ein Punkt durch Matrixmultiplikation vom Basiskoordinatensystem $S_b$ in das System $S_e$ des Endeffektors transformiert werden. 
+\begin{equation}
+p_e=A_n^e \dots A_1^2A_0^1p_0=A_0^ep_0
+\label{p0nachpe}
+\end{equation}
+System $S_n$ ist das Koordinatensystem an dem Gelenk, mit dem der Endeffektor verbunden ist.
+
+%todo Bild einfügen
+Transformiert man nun einen Punkt im Basis-Koordinatensystem in das des Endeffektors, von dort aus in das eines Markers und anschließend aus dem des Markers wiederum in das Basiskoordinatensystem, so erhält man zunächste die einzelnen Gleichungen
+\begin{equation}
+p_e=A_b^ep_b
+\label{pbnachpe}
+\end{equation}
+\begin{equation}
+p_m=A_e^mp_e
+\label{penachpm}
+\end{equation}
+\begin{equation}
+p_b=A_m^bp_m
+\label{pmnachpb}
+\end{equation}
+Setzt man diese Gleichungen nun in einander ein, so erhält man
+\begin{equation}
+p_b=A_m^bA_e^mA_b^ep_b
+\label{pbnachpb}
+\end{equation}
+Ein Punkt $p_k$ in einem beliebigen Koordinatensystem $S_k$ lässt sich auch darstellen als 
+\begin{equation}
+p_k=Ep_k
+\label{pknachpk}
+\end{equation}
+$E$ ist hierbei die Einheitsmatrix. Durch das Multiplizieren mit der Einheitsmatrix ändert sich der Punkt nicht. Bei Betrachtung der Gleichungen \ref{pbnachpb} und \ref{pknachpk} ist zu sehen, dass nun also 
+\begin{equation}
+A_m^bA_e^mA_b^e=E 
+\label{E}
+\end{equation}
+sein muss.\\ \\
+\begin{figure}[h] 
+  \centering
+     \includegraphics[width=0.7\textwidth]{Images/P3.jpg}
+  \caption{todo}
+  \label{loop}
+\end{figure}
+
+
+Die Positionen des Endeffektors und des Markers sind im Normalfall bekannt. Dies bedeutet, der Endeffektor muss so bewegt werden, dass $S_e$ und $S_m$ sich decken. Also dass im Idealfall
+\begin{equation}
+A_e^m=E
+\label{aemistE}
+\end{equation}
+wird. Eine Schwierigkeit ist hierbei jedoch, dass die Position des Markers in karthesischen Koordinaten gegeben ist, die des Endeffektors jedoch in Achswinkeln. Die nötigen Änderungen müssen ebenfalls in Achswinkeln angegeben werden. Denn der Roboter benötigt diese, um zu wissen, wie es sich bewegen soll, um den Endeffektor möglichst nah zum Marker zu bewegen.
+Sowohl die Umrechnung der Darstellungsformen in einander als auch 
+
+
+%Diese Situation wird nun an einem kompakten Beispiel \cite{Siciliano} erläutert.
+%
+%[Bild ähnlich Siciliano Seite 60 einfügen]
+%
+%Abgebildet ist ein planarer Manipulator mit 2 Gliedern, die durch ein Drehgelenk mit einander verbunden sind. Das erste ist außerdem durch ein Drehgelenk mit der Basis verbunden. Das erste Gelenk ist um den Winkel $\vartheta_1$, das zweite um $\vartheta_2$ gedreht. Das erste Glied hat die Länge a$_1$, das zweite die Länge a$_2$.  Somit ergibt sich eine Transformationsmatrix
+%
+%\begin{equation}
+%A_b^e=\left(
+%\begin{array}{cccc}
+%0 & sin(\vartheta_1 + \vartheta_2) & cos(\vartheta_1 + \vartheta_2) & a_1 \cdot cos(\vartheta_1)+a_2 \cdot cos(\vartheta_1+\vartheta_2)\\
+%0 & -cos(\vartheta_1 + \vartheta_2) & sin(\vartheta_1 + \vartheta_2) & a_1 \cdot sin(\vartheta_1)+a_2 \cdot sin(\vartheta_1+\vartheta_2) \\
+%1 & 0 & 0 & 0 \\
+%0 & 0 & 0 & 1
+%\end{array}\right)
+%\label{Beispiel1}
+%\end{equation}
+%$A_b^e$ setzt sich zusammen aus der 3x3-Rotationsmatrix $R_b^e$ und dem Translationsvektor $o_b^e$.
+%
+%\begin{equation}
+%A_b^e=\left(
+%\begin{array}{rr} 
+%R_b^e & o_b^e \\
+%\vec{0} & 1
+%\end{array}\right)
+%\end{equation}
+%$\vec{0}$ ist hier der 1x3-Nullvektor. 
+%Wenn Rotation und Translation bekannt sind, lassen sich daraus nun die Winkel $\vartheta_1$ und $\vartheta_2$ berechnen. Allerdins wird diese Berechnung mit zunehmender Anzahl an Gelenken auch deutlich komplexer.
+%%
+%Die Rotationsmatrix $R_1^0$ ist eine 3x3-Matrix. Die Rotation wird also mithilfe von 9 Parametern beschrieben. Dabei sind dafür im dreidimensionalen Raum bereits 3 Parameter ausreichend. Genau genommen benötigt man für die Darstellung einer Drehung im $m$-dimensionalen Raum $m(m-1)/2$ Parameter. \cite{Siciliano}. 
+%
+%Eine Möglichkeit ist zum Beispiel auch die Darstellung durch drei Winkel, die angeben, wie weit ein Koordinatensystem um seine eignene Achsen gedreht wird. Solange dabei nicht zwei mal nach einander um dieselbe Achse gedreht wird, lässt sich so jede Rotation realisieren. Damit gibt es also 2 Möglichkeit für die Darstellung durch Winkel, den sogenannten Eulerwinkeln. Zum Einen eine Drehung um die $x$-, eine um die $y$- und schließlich eine um die $z$-Achse.  Zum Anderen eine Drehung um die $x$-, eine um die $y$- und schließlich erneut eine um die $z$-Achse.
+ 
+\subsection{Rückwärtskinematik}
+Bei der Rückwärtskinematik ist die Position und Ausrichtung des Endeffektors gegeben. Berechnet werden dann die Achswinkel, die nötig sind, um den Roboter in die gewünschte Haltung zu bringen.
+
+\chapter{Tuning von Reglern}
+\chapter{Eigene Implementierung}
+\section{}
+\chapter{Tests}
+\section{Beschreibung}
+\section{Ergebnisse}
+\section{Fazit}
+
+
+
+\begin{thebibliography}{5}
+\bibitem{Siciliano}Siciliano, Bruno u.a., Robotics -- Modelling, Planning and Control, Springer Verlag, 2009.
+\bibitem{orocos} unvollständig!! http://www.orocos.org/wiki/orocos/itasc-wiki/1-what-itasc %todo
+\end{thebibliography}
+
+
+\chapter*{Erklärung}
+Ich erkläre, dass ich die Arbeit selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel verwendet habe. \\ \\ \\ \\ \\
+\begin{minipage}{0.4\textwidth}
+Ulm, den 25.09.2015
+\end{minipage}
+\begin{minipage}{0.6\textwidth}
+\begin{flushright}
+Katharina Krammer
+\end{flushright}
+\end{minipage}
+
+
+\end{document}

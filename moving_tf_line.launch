@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- !!! service call or published message needed to start !!! -->
+	<node pkg="ipa325_tf_utils" type="moving_tf_frame.py" name="moving_tf" output="screen">
+		<param name="tf_parent" 	value="base_link" 	type="str"/>
+		<param name="tf_child" 		value="moving_tf" 	type="str"/>
+
+		<!-- choose either: line, hexagon, points, circle or spiral-->
+		<param name="movement_type"	value="line" 		type="str"/>
+
+		<param name="move_frame_roll" 	value="0" 		type="double" />
+		<param name="move_frame_pitch" 	value="0" 		type="double" />
+		<param name="move_frame_yaw" 	value="0" 		type="double" />
+
+
+		<!-- line parameters -->
+		<param name="line_x_start" 		value="-1" 		type="double" />
+		<param name="line_y_start" 		value="0.5" 	type="double" />
+		<param name="line_z_start" 		value="0" 		type="double" />
+
+		<param name="line_x_direction" 	value="0.1" 	type="double" />
+		<param name="line_y_direction" 	value="0" 		type="double" />
+		<param name="line_z_direction" 	value="0" 		type="double" />
+
+		<!-- hexagon parameters -->
+		<param name="x_start" 		value="0.35" 	type="double" />
+		<param name="y_start" 		value="0.35" 	type="double" />
+		<param name="z_start" 		value="0" 		type="double" />
+
+		<!-- point parameters -->
+		<param name="point_x_start" 		value="0.55" 	type="double" />
+		<param name="point_y_start" 		value="0" 	type="double" />
+		<param name="point_z_start" 		value="0.65" 		type="double" />
+
+
+		<!-- circle parameters -->
+		<param name="x_center" 		value="0.35" 	type="double" />
+		<param name="y_center" 		value="0.35" 	type="double" />
+		<param name="z_center" 		value="0" 		type="double" />
+
+		<param name="radius" 		value="0.25" 	type="double" />
+
+
+		<!-- spiral parameters -->
+		<param name="inside_out" 	value="True" 	type="bool" />
+
+		<param name="x_center" 		value="0.4"		type="double" />
+		<param name="y_center" 		value="0.4" 	type="double" />
+		<param name="z_center" 		value="0" 		type="double" />
+
+		<param name="max_radius" 	value="0.3" 	type="double" />
+
+		<param name="spiral_branch_distance" 	value="0.05" 	type="double" />
+		
+
+		<!-- time parameters -->
+		<param name="time_steps_hz" value="100" 	type="double" />
+		<param name="stop_time" 	value="0" 		type="double" /> #stop after ... seconds, 0 = inf
+
+
+		<!-- trace parameters -->
+		<param name="show_path" 	value="True" 	type="bool" />
+
+		<param name="trace_scale_x" value="0.01" 	type="double" />
+		<param name="trace_scale_y" value="0.01" 	type="double" />
+		<param name="trace_scale_z" value="0.01" 	type="double" />
+
+		<param name="trace_color_r" value="1" 		type="double" />
+		<param name="trace_color_g" value="0" 		type="double" />
+		<param name="trace_color_b" value="0" 		type="double" />
+		<param name="trace_color_a" value="1" 		type="double" />
+
+	</node>
+
+
+</launch>
