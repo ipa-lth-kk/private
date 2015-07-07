@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pitasc>
+
+    <parameter_models>
+        <include package="pitasc_smach" file="models/pitasc.xml"/>
+        <include package="pitasc_smach" file="models/robots.xml"/>
+        <include package="pitasc_smach" file="models/chains.xml"/>
+        <include package="pitasc_smach" file="models/controllers.xml"/>
+        <include package="pitasc_smach" file="models/watchdogs.xml"/>
+        <include package="pitasc_smach" file="models/scripts.xml"/>
+    </parameter_models>
+
+    <application>
+
+        <instance type="application">
+
+            <member id="scene">
+                <instance id="scene" type="scene_smach"/>
+            </member>
+
+            <member id="default_controller">
+                <!--instance type="naive_pid_controller"-->
+                <instance type="naive_pid_controller">
+                    <member id="arguments">
+                        <member id="p_gain">0.49</member>
+                        <member id="i_gain">0</member>
+                        <member id="d_gain">0</member>
+                        <member id="max_vel">1</member>
+                        <member id="max_acc">0.006</member>
+                    </member>
+                </instance>
+            </member>
+
+            <member id="solver">
+                <instance type="solver_prioritized"/>
+            </member>
+
+            <instance type="skill">
+
+                <member id="name">main</member>
+                <member id="initial_skill">state01</member>
+
+                <parameter_models>
+                    <parameter>
+                        <type>marker_task</type>
+                        <base_type>constraints</base_type>
+                        <description>...</description>
+                        <data>
+                            <member id="chain">marker_to_eef</member>
+                            <member id="prefix">x1</member>
+                        </data>
+                    </parameter>
+                </parameter_models>
+
+                <member id="collections">
+
+                    <instance type="chain_simple_pose">
+                        <member id="arguments">
+                            <member id="name">marker_to_eef</member>
+                            <member id="prefix">x1</member>
+                            <member id="variable_type">feature</member>
+                            <member id="from_frame">moving_tf</member>
+                            <member id="to_frame">ee_link</member>
+                        </member>
+                    </instance>
+
+                    <instance type="chain_simple_pose">
+                        <member id="arguments">
+                            <member id="name">base_to_marker</member>
+                            <member id="prefix">o1</member>
+                            <member id="variable_type">object</member>
+                            <member id="from_frame">base_link</member>
+                            <member id="to_frame">moving_tf</member>
+                        </member>
+                    </instance>
+
+                    <instance type="robot_ur5">
+                        <member id="arguments">
+                            <member id="name">robot1</member>
+                            <member id="use_integrator">True</member>
+                        </member>
+                    </instance>
+
+                </member>
+
+                <member id="loops">
+                    <instance type="kinematic_loop">
+                        <member id="arguments">
+                            <member id="name">viaMarker</member>
+                            <member id="robot_chains">
+                                <instance type="loop_chain">
+                                    <member id="chain_name">robot1</member>
+                                </instance>
+                            </member>
+                            <member id="feature_chains">
+                                <instance type="loop_chain">
+                                    <member id="chain_name">base_to_marker</member>
+                                </instance>
+                                <instance type="loop_chain">
+                                    <member id="chain_name">marker_to_eef</member>
+                                    <!--member id="inverted">True</member-->
+                                </instance>
+                            </member>
+                        </member>
+                    </instance>
+                </member>
+
+
+                <member id="transitions">
+                    <instance type="transition">
+                        <member id="event">done</member>
+                        <member id="target">succeeded</member>
+                    </instance>
+                </member>
+
+                <member id="skills">
+
+                    <instance type="skill">
+
+                        <member id="name">state01</member>
+
+                        <member id="transitions">
+                            <instance type="transition">
+                                <member id="event">watchdog.counted</member>
+                                <member id="target">state01</member>
+                            </instance>
+                        </member>
+
+                        <member id="tasks_high">
+                            <instance type="marker_task">
+                                <member id="symbols">a, b, c, x, y, z</member>
+                                <member id="desired">0, 0, 0, 0, 0, 0</member>
+                            </instance>
+                        </member>
+
+                        <member id="watchdogs">
+                            <instance type="watchdog_duration">
+                                <member id="arguments">
+                                    <member id="event">watchdog.counted</member>
+                                    <member id="duration">1000</member>
+                                </member>
+                            </instance>
+                        </member>
+
+                        <member id="scripts">
+                            <instance type="script_residual_publisher">
+                            </instance>
+                        </member>
+
+                    </instance>                    
+
+                </member>
+
+            </instance>
+
+        </instance>
+
+    </application>
+
+</pitasc>
